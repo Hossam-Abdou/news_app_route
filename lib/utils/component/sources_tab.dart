@@ -14,6 +14,7 @@ class SourcesTab extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         var cubit = HomeCubit.get(context);
+
         return TabBar(
           splashFactory: NoSplash.splashFactory,
           indicatorColor: Colors.transparent,
@@ -25,7 +26,7 @@ class SourcesTab extends StatelessWidget {
           onTap: (index) {
             cubit.changeContainerColor(index);
             cubit.getEverything(
-                cubit.sourcesModel?.sources?[index].id ?? '');
+                source:cubit.sourcesModel?.sources?[index].id ?? '');
           },
           tabs: cubit.sourcesModel?.sources?.map((source) {
             int index =
@@ -39,7 +40,8 @@ class SourcesTab extends StatelessWidget {
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(25.r),
                 border: Border.all(
-                    color: AppColors.primaryColor, width: 2),
+                    color: AppColors.primaryColor, width: 2.w,
+                ),
               ),
               child: Text(
                 source.name ?? "",

@@ -24,11 +24,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(ChangeContainerColorState());
   }
 
-  void getSources(id) async{
+  void getSources(id) async {
     emit(HomeLoadingState());
     Uri uri = Uri.https('newsapi.org', '/v2/top-headlines/sources',
-        {'apiKey': 'a8da8a6e02e14948a25ac8c8cdc9ef44',
-          "category": id});
+        {'apiKey': 'a8da8a6e02e14948a25ac8c8cdc9ef44', "category": id});
     http.get(uri).then((value) {
       debugPrint('Response status: ${value.statusCode}');
       debugPrint('Response body: ${value.body}');
@@ -37,21 +36,33 @@ class HomeCubit extends Cubit<HomeState> {
       );
       emit(HomeSuccessState());
 
-      getEverything(sourcesModel!.sources![currentIndex].id ?? '');
-
+      getEverything(source:sourcesModel!.sources![currentIndex].id ?? '');
     }).catchError((error) {
       debugPrint('Error: $error');
       emit(HomeErrorState());
     });
   }
 
-  void getEverything(String source) {
+  void getEverything({String? query,String? source}) {
     emit(GetNewsLoadingState());
+    Map<String, String> queryParams = {
+      'apiKey': 'a8da8a6e02e14948a25ac8c8cdc9ef44',
+    };
+
+    if (query != null && query.isNotEmpty) {
+      queryParams['q'] = query;
+    }
+    if (source != null && source.isNotEmpty) {
+      queryParams['sources'] = source;
+    }
     Uri uri = Uri.https(
       EndPoints.baseUrl,
       EndPoints.everything,
-      {'apiKey': 'a8da8a6e02e14948a25ac8c8cdc9ef44', "sources": source},
+      queryParams,
     );
+    if (query != null && query.isNotEmpty) {
+      queryParams['q'] = query;
+    }
     http.get(uri).then((value) {
       debugPrint('Response status: ${value.statusCode}');
       debugPrint('Response body: ${value.body}');
@@ -62,5 +73,4 @@ class HomeCubit extends Cubit<HomeState> {
       emit(GetNewsErrorState());
     });
   }
-
 }

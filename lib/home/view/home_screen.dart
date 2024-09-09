@@ -8,10 +8,17 @@ import 'package:new_app_route/utils/component/custom_drawer.dart';
 import 'package:new_app_route/utils/component/news_list_view.dart';
 import 'package:new_app_route/utils/component/sources_tab.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String routeName = 'home';
 
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool  isSearching = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,56 +62,60 @@ class HomeScreen extends StatelessWidget {
             child: Scaffold(
               drawer: CustomDrawer(),
               appBar: AppBar(
-                // leading:!_isSearching? null :SizedBox.shrink(),
+
+                leading:!isSearching? null :SizedBox.shrink(),
                 iconTheme: const IconThemeData(
                   color: AppColors.white,
                 ),
                 centerTitle: true,
                 elevation: 0,
-                // actions: [
-                //   // IconButton(
-                //   //   onPressed: () {
-                //   //     setState(() {
-                //   //       _isSearching = !_isSearching;
-                //   //     });
-                //   //   },
-                //   //   icon: Icon(
-                //   //     _isSearching ? Icons.close : Icons.search,
-                //   //     size: 35.sp,
-                //   //   ),
-                //   // ),
-                // ],
-                title:   Text(
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        print(isSearching);
+                        isSearching = !isSearching;
+                      });
+                    },
+                    icon: Icon(
+                      isSearching ? Icons.close : Icons.search,
+                      size: 35.sp,
+                    ),
+                  ),
+                ],
+                title: isSearching ?   Text(
                   categoryId,
                   style: GoogleFonts.exo(
                     color: AppColors.white,
                     fontWeight: FontWeight.w400,
                     fontSize: 22.sp,
                   ),
+                ): TextFormField(
+onFieldSubmitted: (value) {
+  return cubit.getEverything(query: value);
+},
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search, color: AppColors.primaryColor,) ,
+                // suffixIcon: Icon(Icons.close, color: AppColors.primaryColor,),
+                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                fillColor: Colors.white,
+                filled: true,
+                hintText: 'Search',
+                hintStyle: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff39A552)
                 ),
-                // _isSearching ? TextFormField(
-                // //
-                // //   decoration: InputDecoration(
-                // //     prefixIcon: Icon(Icons.search, color: AppColors.primaryColor,) ,
-                // //     suffixIcon: Icon(Icons.close, color: AppColors.primaryColor,),
-                // //     contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                // //     fillColor: Colors.white,
-                // //     filled: true,
-                // //     hintText: 'Email',
-                // //     hintStyle: GoogleFonts.poppins(
-                // //       fontSize: 14,
-                // //       fontWeight: FontWeight.w400,
-                // //       color: Color(0xff39A552)
-                // //     ),
-                // //     border: OutlineInputBorder(
-                // //       borderRadius: BorderRadius.circular(30),
-                // //       borderSide: BorderSide(
-                // //         color: Colors.white,
-                // //       ),
-                // //     ),
-                // //   ),
-                // // )
-                // //     :
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                ),
+
+              ),
+            ),
+
 
                 backgroundColor: AppColors.primaryColor,
                 shape: OutlineInputBorder(

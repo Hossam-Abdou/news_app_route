@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:new_app_route/home/view/category_screen.dart';
 import 'package:new_app_route/home/view/home_screen.dart';
+import 'package:new_app_route/home/view/new_details.dart';
 import 'package:new_app_route/home/view/splash_screen.dart';
 import 'package:new_app_route/home/view_model/home_cubit.dart';
 import 'package:new_app_route/my_bloc_observer.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
             HomeScreen.routeName: (context) => const HomeScreen(),
             SplashScreen.routeName: (context) => const SplashScreen(),
             CategoryScreen.routeName:(context)=> const CategoryScreen(),
+            NewDetails.routeName:(context)=> const NewDetails(),
 
           },
           initialRoute: CategoryScreen.routeName,

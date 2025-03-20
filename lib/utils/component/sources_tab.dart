@@ -8,7 +8,6 @@ import 'package:new_app_route/utils/app_colors/app_colors.dart';
 class SourcesTab extends StatelessWidget {
   const SourcesTab({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
@@ -26,35 +25,35 @@ class SourcesTab extends StatelessWidget {
           onTap: (index) {
             cubit.changeContainerColor(index);
             cubit.getEverything(
-                source:cubit.sourcesModel?.sources?[index].id ?? '');
+                source: cubit.sourcesModel?.sources?[index].id ?? '');
           },
           tabs: cubit.sourcesModel?.sources?.map((source) {
-            int index =
-            cubit.sourcesModel!.sources!.indexOf(source);
-            return Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 16.w, vertical: 7.h),
-              decoration: BoxDecoration(
-                color: cubit.currentIndex == index
-                    ? AppColors.primaryColor
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(25.r),
-                border: Border.all(
-                    color: AppColors.primaryColor, width: 2.w,
-                ),
-              ),
-              child: Text(
-                source.name ?? "",
-                style: GoogleFonts.exo(
-                  color: cubit.currentIndex == index
-                      ? AppColors.white
-                      : AppColors.primaryColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            );
-          }).toList() ??
+                int? index = cubit.sourcesModel?.sources?.indexOf(source);
+                return Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
+                  decoration: BoxDecoration(
+                    color: cubit.currentIndex == index
+                        ? AppColors.primaryColor
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(25.r),
+                    border: Border.all(
+                      color: AppColors.primaryColor,
+                      width: 2.w,
+                    ),
+                  ),
+                  child: Text(
+                    source.name ?? "",
+                    style: GoogleFonts.exo(
+                      color: cubit.currentIndex == index
+                          ? AppColors.white
+                          : AppColors.primaryColor,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                );
+              }).toList() ??
               [],
         );
       },

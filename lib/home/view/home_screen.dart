@@ -18,11 +18,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool  isSearching = false;
+  bool isSearching = false;
+  String searchedText = '';
 
   @override
   Widget build(BuildContext context) {
-    final String categoryId = ModalRoute.of(context)?.settings.arguments as String? ?? '';
+    final String categoryId =
+        ModalRoute.of(context)?.settings.arguments as String? ?? '';
     return BlocProvider(
       create: (context) => HomeCubit()..getSources(categoryId),
       child: BlocConsumer<HomeCubit, HomeState>(
@@ -60,10 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
           return DefaultTabController(
             length: cubit.sourcesModel?.sources?.length ?? 0,
             child: Scaffold(
-              drawer: CustomDrawer(),
+              drawer: const CustomDrawer(),
               appBar: AppBar(
-
-                leading:!isSearching? null :SizedBox.shrink(),
+                leading: !isSearching ? null : const SizedBox.shrink(),
                 iconTheme: const IconThemeData(
                   color: AppColors.white,
                 ),
@@ -83,40 +84,44 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ],
-                title: isSearching ?   Text(
-                  categoryId,
-                  style: GoogleFonts.exo(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 22.sp,
-                  ),
-                ): TextFormField(
-onFieldSubmitted: (value) {
-  return cubit.getEverything(query: value);
-},
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search, color: AppColors.primaryColor,) ,
-                // suffixIcon: Icon(Icons.close, color: AppColors.primaryColor,),
-                contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                fillColor: Colors.white,
-                filled: true,
-                hintText: 'Search',
-                hintStyle: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff39A552)
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
-
-              ),
-            ),
-
-
+                title: isSearching
+                    ? Text(
+                  searchedText,
+                        style: GoogleFonts.exo(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 22.sp,
+                        ),
+                      )
+                    : TextFormField(
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            searchedText=value;
+                          });
+                          return cubit.getEverything(query: value);
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: AppColors.primaryColor,
+                          ),
+                          // suffixIcon: Icon(Icons.close, color: AppColors.primaryColor,),
+                          contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Search',
+                          hintStyle: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff39A552)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                 backgroundColor: AppColors.primaryColor,
                 shape: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.transparent),
@@ -130,7 +135,7 @@ onFieldSubmitted: (value) {
                 padding: EdgeInsets.symmetric(vertical: 16.r),
                 child: const Column(
                   children: [
-                     SourcesTab(),
+                    SourcesTab(),
                     NewsListView(),
                   ],
                 ),

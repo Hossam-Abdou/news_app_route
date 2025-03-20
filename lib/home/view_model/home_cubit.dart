@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_app_route/home/model/source_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:new_app_route/home/model/everythig_model.dart';
+import 'package:new_app_route/utils/cached_variables/cached_variables.dart';
 import 'package:new_app_route/utils/end_points/end_points.dart';
 
 part 'home_state.dart';
@@ -26,8 +27,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   void getSources(id) async {
     emit(HomeLoadingState());
-    Uri uri = Uri.https('newsapi.org', '/v2/top-headlines/sources',
-        {'apiKey': 'a8da8a6e02e14948a25ac8c8cdc9ef44', "category": id});
+    Uri uri = Uri.https(
+        'newsapi.org',
+        '/v2/top-headlines/sources',
+        {'apiKey': CachedVariables.apiKey, "category": id}
+    );
     http.get(uri).then((value) {
       debugPrint('Response status: ${value.statusCode}');
       debugPrint('Response body: ${value.body}');
@@ -36,17 +40,17 @@ class HomeCubit extends Cubit<HomeState> {
       );
       emit(HomeSuccessState());
 
-      getEverything(source:sourcesModel!.sources![currentIndex].id ?? '');
+      getEverything(source: sourcesModel!.sources![currentIndex].id ?? '');
     }).catchError((error) {
       debugPrint('Error: $error');
       emit(HomeErrorState());
     });
   }
 
-  void getEverything({String? query,String? source}) {
+  void getEverything({String? query, String? source}) {
     emit(GetNewsLoadingState());
     Map<String, String> queryParams = {
-      'apiKey': 'a8da8a6e02e14948a25ac8c8cdc9ef44',
+      'apiKey': CachedVariables.apiKey,
     };
 
     if (query != null && query.isNotEmpty) {
